@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include "file_io.hpp"
+#include "ml_cpp_utils/file_io.hpp"
 
 TEST(file_io, simple_read) {
     auto file_contents{ml::read_file("resources/file_read.txt")};

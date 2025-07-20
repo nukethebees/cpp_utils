@@ -1,7 +1,7 @@
 ﻿cmake_minimum_required (VERSION 3.25)
 
 project ("cpp_utils" 
-    VERSION 0.1.0
+    VERSION 0.2.0
     LANGUAGES CXX
 )
 
@@ -9,14 +9,11 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Include sub-projects.
-add_subdirectory ("cpp_utils")
+add_subdirectory ("ml_cpp_utils")
 add_subdirectory ("tests")
 
 # Packaging
 ##############################################
-# Internally the package is just cpp_utils
-# When packaged for external use it is ml_cpp_utils
-
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
@@ -42,10 +39,9 @@ install(FILES
 )
 
 install(
-    TARGETS cpp_utils
+    TARGETS ml_cpp_utils
     EXPORT ml_cpp_utils_targets
     FILE_SET HEADERS
-    DESTINATION include/ml_cpp_utils
 )
 
 install(
