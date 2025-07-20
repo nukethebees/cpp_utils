@@ -4,6 +4,7 @@
 #include "file_io.hpp"
 
 namespace ml {
+// Read a file into a string
 auto read_file(std::filesystem::path path) -> std::string {
     std::ifstream const t(path);
     std::stringstream buffer;
