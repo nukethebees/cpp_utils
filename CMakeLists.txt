@@ -45,6 +45,7 @@ install(
     TARGETS cpp_utils
     EXPORT ml_cpp_utils_targets
     FILE_SET HEADERS
+    DESTINATION include/ml_cpp_utils
 )
 
 install(

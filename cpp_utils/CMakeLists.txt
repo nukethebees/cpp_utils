@@ -6,7 +6,7 @@ target_sources(cpp_utils
         "file_io.cpp"
     PUBLIC
         FILE_SET HEADERS
-        BASE_DIRS ../
+        BASE_DIRS ./
         FILES "file_io.hpp"
 )
 
