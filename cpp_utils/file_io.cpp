@@ -10,4 +10,8 @@ auto read_file(std::filesystem::path path) -> std::string {
     buffer << t.rdbuf();
     return buffer.str();
 }
+void write_file(std::filesystem::path path, std::string_view contents) {
+    std::ofstream out_stream{path};
+    out_stream << contents;
+}
 }
