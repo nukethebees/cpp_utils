@@ -10,5 +10,6 @@ target_sources(ml_cpp_utils
         FILES 
             "file_io.hpp"
             "iter_utils.hpp"
+            "split_span.hpp"
 )
 
