@@ -7,6 +7,8 @@ target_sources(ml_cpp_utils
     PUBLIC
         FILE_SET HEADERS
         BASE_DIRS ../
-        FILES "file_io.hpp"
+        FILES 
+            "file_io.hpp"
+            "iter_utils.hpp"
 )
 
