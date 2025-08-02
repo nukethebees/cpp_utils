@@ -11,5 +11,6 @@ target_sources(ml_cpp_utils
             "file_io.hpp"
             "iter_utils.hpp"
             "split_span.hpp"
+            "string_hasher.hpp"
 )
 
