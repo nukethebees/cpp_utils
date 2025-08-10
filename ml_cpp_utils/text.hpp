@@ -78,26 +78,26 @@ auto num_to_string(T num) -> std::string {
     std::array<char, buffer_size> buffer{};
     auto index{buffer_size};
 
-    auto is_negative{false};
-    std::uint64_t unum{0};
     if constexpr (std::is_signed_v<T>) {
-        is_negative = num < 0;
-        unum = is_negative ? static_cast<std::uint64_t>(-static_cast<std::int64_t>(num))
-                           : static_cast<std::uint64_t>(num);
+        using U = std::make_unsigned_t<T>;
+
+        auto const is_negative{num < 0};
+        auto unum{is_negative ? static_cast<U>(-static_cast<std::intmax_t>(num))
+                              : static_cast<U>(num)};
+        while (unum) {
+            buffer[--index] = digits[unum % base];
+            unum /= base;
+        }
+        if (is_negative) {
+            buffer[--index] = '-';
+        }
     } else {
-        unum = static_cast<std::uint64_t>(num);
+        while (num) {
+            buffer[--index] = digits[num % base];
+            num /= base;
+        }
     }
 
-    while (unum) {
-        buffer[--index] = digits[unum % base];
-        unum /= base;
-    }
-    if (is_negative) {
-        buffer[--index] = '-';
-    }
-
-    auto const buffer_n_elems{buffer_size - index};
-    auto const buffer_data_start{buffer.data() + index};
-    return std::string{buffer_data_start, buffer_n_elems};
+    return std::string{buffer.data() + index, buffer_size - index};
 }
 }
