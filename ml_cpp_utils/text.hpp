@@ -4,6 +4,7 @@
 #include <array>
 #include <cmath>
 #include <cstddef>
+#include <memory_resource>
 #include <string>
 #include <type_traits>
 
@@ -65,59 +66,38 @@ inline auto count_digits(T value) -> std::size_t {
 template <std::size_t base, typename T>
     requires (std::is_integral_v<T> && (base >= 2))
 auto num_to_string(T num) -> std::string {
-    std::string out;
+    if (num == 0) {
+        return "0";
+    }
 
     static constexpr std::array<char, 36> digits{
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
         'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
-#ifdef _WIN32
-    static constexpr std::size_t small_string_size{15};
-#elif defined(__clang__) || defined(__GNUC__)
-    static constexpr std::size_t small_string_size{23};
-#else
-    static constexpr std::size_t small_string_size{0};
-#endif
+    static constexpr std::size_t buffer_size{65};
+    std::array<char, buffer_size> buffer{};
+    auto index{buffer_size};
 
+    auto is_negative{false};
+    std::uint64_t unum{0};
     if constexpr (std::is_signed_v<T>) {
-        auto const is_negative{num < 0};
-        auto unum{is_negative ? static_cast<std::uint64_t>(-static_cast<std::int64_t>(num))
-                              : static_cast<std::uint64_t>(num)};
-        auto const n_digits{count_digits<base>(unum) + static_cast<std::size_t>(is_negative)};
-        if (n_digits > small_string_size) {
-            out.reserve(n_digits);
-        }
-
-        while (unum) {
-            out += digits[unum % base];
-            unum /= base;
-        }
-
-        if (out.empty()) {
-            out += '0';
-        }
-
-        if (is_negative) {
-            out += '-';
-        }
+        is_negative = num < 0;
+        unum = is_negative ? static_cast<std::uint64_t>(-static_cast<std::int64_t>(num))
+                           : static_cast<std::uint64_t>(num);
     } else {
-        auto const n_digits{count_digits<base>(num)};
-        if (n_digits > small_string_size) {
-            out.reserve(n_digits);
-        }
-
-        while (num) {
-            out += digits[num % base];
-            num /= base;
-        }
-
-        if (out.empty()) {
-            out += '0';
-        }
+        unum = static_cast<std::uint64_t>(num);
     }
 
-    std::reverse(out.begin(), out.end());
+    while (unum) {
+        buffer[--index] = digits[unum % base];
+        unum /= base;
+    }
+    if (is_negative) {
+        buffer[--index] = '-';
+    }
 
-    return out;
+    auto const buffer_n_elems{buffer_size - index};
+    auto const buffer_data_start{buffer.data() + index};
+    return std::string{buffer_data_start, buffer_n_elems};
 }
 }
