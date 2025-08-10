@@ -1,5 +1,7 @@
-#include <gtest/gtest.h>
+#include <limits>
 #include <string_view>
+
+#include <gtest/gtest.h>
 
 #include "ml_cpp_utils/text.hpp"
 
@@ -116,81 +118,121 @@ TEST(num_to_string, binary_values) {
 
 TEST(num_to_string, binary_unsigned) {
     using T = unsigned int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<2>(T{0}), "0");
     EXPECT_EQ(ml::num_to_string<2>(T{1}), "1");
     EXPECT_EQ(ml::num_to_string<2>(T{2}), "10");
     EXPECT_EQ(ml::num_to_string<2>(T{15}), "1111");
     EXPECT_EQ(ml::num_to_string<2>(T{255}), "11111111");
+    EXPECT_EQ(ml::num_to_string<2>(max), "11111111111111111111111111111111");
+    EXPECT_EQ(ml::num_to_string<2>(min), "0");
 }
 
 TEST(num_to_string, binary_signed) {
     using T = int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<2>(T{0}), "0");
     EXPECT_EQ(ml::num_to_string<2>(T{1}), "1");
     EXPECT_EQ(ml::num_to_string<2>(T{-1}), "-1");
     EXPECT_EQ(ml::num_to_string<2>(T{-2}), "-10");
     EXPECT_EQ(ml::num_to_string<2>(T{7}), "111");
     EXPECT_EQ(ml::num_to_string<2>(T{-7}), "-111");
+    EXPECT_EQ(ml::num_to_string<2>(max), "1111111111111111111111111111111");
+    EXPECT_EQ(ml::num_to_string<2>(min), "-10000000000000000000000000000000");
 }
 
 TEST(num_to_string, octal_unsigned) {
     using T = unsigned int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<8>(T{0}), "0");
     EXPECT_EQ(ml::num_to_string<8>(T{8}), "10");
     EXPECT_EQ(ml::num_to_string<8>(T{64}), "100");
     EXPECT_EQ(ml::num_to_string<8>(T{255}), "377");
+    EXPECT_EQ(ml::num_to_string<8>(max), "37777777777");
+    EXPECT_EQ(ml::num_to_string<8>(min), "0");
 }
 
 TEST(num_to_string, octal_signed) {
     using T = int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<8>(T{-8}), "-10");
     EXPECT_EQ(ml::num_to_string<8>(T{-64}), "-100");
     EXPECT_EQ(ml::num_to_string<8>(T{-255}), "-377");
+    EXPECT_EQ(ml::num_to_string<8>(max), "17777777777");
+    EXPECT_EQ(ml::num_to_string<8>(min), "-20000000000");
 }
 
 TEST(num_to_string, decimal_unsigned) {
     using T = unsigned int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<10>(T{0}), "0");
     EXPECT_EQ(ml::num_to_string<10>(T{123}), "123");
     EXPECT_EQ(ml::num_to_string<10>(T{4294967295}), "4294967295"); // max uint32_t
+    EXPECT_EQ(ml::num_to_string<10>(max), "4294967295");
+    EXPECT_EQ(ml::num_to_string<10>(min), "0");
 }
 
 TEST(num_to_string, decimal_signed) {
     using T = int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<10>(T{0}), "0");
     EXPECT_EQ(ml::num_to_string<10>(T{-123}), "-123");
     EXPECT_EQ(ml::num_to_string<10>(T{2147483647}), "2147483647"); // max int32_t
     EXPECT_EQ(ml::num_to_string<10>(T{-2147483647}), "-2147483647");
+    EXPECT_EQ(ml::num_to_string<10>(max), "2147483647");
+    EXPECT_EQ(ml::num_to_string<10>(min), "-2147483648");
 }
 
 TEST(num_to_string, hex_unsigned) {
     using T = unsigned int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<16>(T{0}), "0");
     EXPECT_EQ(ml::num_to_string<16>(T{10}), "A");
     EXPECT_EQ(ml::num_to_string<16>(T{255}), "FF");
     EXPECT_EQ(ml::num_to_string<16>(T{4095}), "FFF");
+    EXPECT_EQ(ml::num_to_string<16>(max), "FFFFFFFF");
+    EXPECT_EQ(ml::num_to_string<16>(min), "0");
 }
 
 TEST(num_to_string, hex_signed) {
     using T = int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<16>(T{-10}), "-A");
     EXPECT_EQ(ml::num_to_string<16>(T{-255}), "-FF");
     EXPECT_EQ(ml::num_to_string<16>(T{-4095}), "-FFF");
+    EXPECT_EQ(ml::num_to_string<16>(max), "7FFFFFFF");
+    EXPECT_EQ(ml::num_to_string<16>(min), "-80000000");
 }
 
 TEST(num_to_string, base36_unsigned) {
     using T = unsigned int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<36>(T{0}), "0");
     EXPECT_EQ(ml::num_to_string<36>(T{35}), "Z");
     EXPECT_EQ(ml::num_to_string<36>(T{36}), "10");
     EXPECT_EQ(ml::num_to_string<36>(T{71}), "1Z");
     EXPECT_EQ(ml::num_to_string<36>(T{1295}), "ZZ");
+    EXPECT_EQ(ml::num_to_string<36>(max), "1Z141Z3");
+    EXPECT_EQ(ml::num_to_string<36>(min), "0");
 }
 
 TEST(num_to_string, base36_signed) {
     using T = int;
+    static constexpr auto min{std::numeric_limits<T>::min()};
+    static constexpr auto max{std::numeric_limits<T>::max()};
     EXPECT_EQ(ml::num_to_string<36>(T{-35}), "-Z");
     EXPECT_EQ(ml::num_to_string<36>(T{-36}), "-10");
     EXPECT_EQ(ml::num_to_string<36>(T{-71}), "-1Z");
     EXPECT_EQ(ml::num_to_string<36>(T{-1295}), "-ZZ");
+    EXPECT_EQ(ml::num_to_string<36>(max), "ZIK0ZJ");
+    EXPECT_EQ(ml::num_to_string<36>(min), "-ZIK0ZK");
 }

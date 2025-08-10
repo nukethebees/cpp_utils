@@ -58,29 +58,40 @@ template <std::size_t base, typename T>
 auto num_to_string(T num) -> std::string {
     std::string out;
 
-    bool is_negative{false};
-    if constexpr (std::is_signed_v<T>) {
-        if (num < 0) {
-            num = -num;
-            is_negative = true;
-        }
-    }
-
     static constexpr std::array<char, 36> digits{
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
         'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
-    while (num) {
-        out += digits[num % base];
-        num /= base;
-    }
+    bool is_negative{false};
+    if constexpr (std::is_signed_v<T>) {
+        auto unum{static_cast<std::uint64_t>(num)};
 
-    if (out.empty()) {
-        out += '0';
-    }
+        if (num < 0) {
+            is_negative = true;
+            unum = static_cast<std::uint64_t>(-static_cast<std::int64_t>(num));
+        }
 
-    if (is_negative) {
-        out += '-';
+        while (unum) {
+            out += digits[unum % base];
+            unum /= base;
+        }
+
+        if (out.empty()) {
+            out += '0';
+        }
+
+        if (is_negative) {
+            out += '-';
+        }
+    } else {
+        while (num) {
+            out += digits[num % base];
+            num /= base;
+        }
+
+        if (out.empty()) {
+            out += '0';
+        }
     }
 
     std::reverse(out.begin(), out.end());
