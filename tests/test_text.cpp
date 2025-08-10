@@ -96,13 +96,14 @@ TEST(is_char, is_inner_identifier_char) {
 }
 
 TEST(num_to_string, binary_values) {
+    using T = std::size_t;
     std::vector<std::string_view> outputs{
         "0",
         "1",
         "10",
         "111",
     };
-    std::vector<std::size_t> inputs{0, 1, 2, 7};
+    std::vector<T> inputs{T{0}, T{1}, T{2}, T{7}};
 
     ASSERT_EQ(inputs.size(), outputs.size());
 
@@ -114,82 +115,82 @@ TEST(num_to_string, binary_values) {
 }
 
 TEST(num_to_string, binary_unsigned) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<2>(0u), "0");
-    EXPECT_EQ(num_to_string<2>(1u), "1");
-    EXPECT_EQ(num_to_string<2>(2u), "10");
-    EXPECT_EQ(num_to_string<2>(15u), "1111");
-    EXPECT_EQ(num_to_string<2>(255u), "11111111");
+    using T = unsigned int;
+    EXPECT_EQ(ml::num_to_string<2>(T{0}), "0");
+    EXPECT_EQ(ml::num_to_string<2>(T{1}), "1");
+    EXPECT_EQ(ml::num_to_string<2>(T{2}), "10");
+    EXPECT_EQ(ml::num_to_string<2>(T{15}), "1111");
+    EXPECT_EQ(ml::num_to_string<2>(T{255}), "11111111");
 }
 
 TEST(num_to_string, binary_signed) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<2>(0), "0");
-    EXPECT_EQ(num_to_string<2>(1), "1");
-    EXPECT_EQ(num_to_string<2>(-1), "-1");
-    EXPECT_EQ(num_to_string<2>(-2), "-10");
-    EXPECT_EQ(num_to_string<2>(7), "111");
-    EXPECT_EQ(num_to_string<2>(-7), "-111");
+    using T = int;
+    EXPECT_EQ(ml::num_to_string<2>(T{0}), "0");
+    EXPECT_EQ(ml::num_to_string<2>(T{1}), "1");
+    EXPECT_EQ(ml::num_to_string<2>(T{-1}), "-1");
+    EXPECT_EQ(ml::num_to_string<2>(T{-2}), "-10");
+    EXPECT_EQ(ml::num_to_string<2>(T{7}), "111");
+    EXPECT_EQ(ml::num_to_string<2>(T{-7}), "-111");
 }
 
 TEST(num_to_string, octal_unsigned) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<8>(0u), "0");
-    EXPECT_EQ(num_to_string<8>(8u), "10");
-    EXPECT_EQ(num_to_string<8>(64u), "100");
-    EXPECT_EQ(num_to_string<8>(255u), "377");
+    using T = unsigned int;
+    EXPECT_EQ(ml::num_to_string<8>(T{0}), "0");
+    EXPECT_EQ(ml::num_to_string<8>(T{8}), "10");
+    EXPECT_EQ(ml::num_to_string<8>(T{64}), "100");
+    EXPECT_EQ(ml::num_to_string<8>(T{255}), "377");
 }
 
 TEST(num_to_string, octal_signed) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<8>(-8), "-10");
-    EXPECT_EQ(num_to_string<8>(-64), "-100");
-    EXPECT_EQ(num_to_string<8>(-255), "-377");
+    using T = int;
+    EXPECT_EQ(ml::num_to_string<8>(T{-8}), "-10");
+    EXPECT_EQ(ml::num_to_string<8>(T{-64}), "-100");
+    EXPECT_EQ(ml::num_to_string<8>(T{-255}), "-377");
 }
 
 TEST(num_to_string, decimal_unsigned) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<10>(0u), "0");
-    EXPECT_EQ(num_to_string<10>(123u), "123");
-    EXPECT_EQ(num_to_string<10>(4294967295u), "4294967295"); // max uint32_t
+    using T = unsigned int;
+    EXPECT_EQ(ml::num_to_string<10>(T{0}), "0");
+    EXPECT_EQ(ml::num_to_string<10>(T{123}), "123");
+    EXPECT_EQ(ml::num_to_string<10>(T{4294967295}), "4294967295"); // max uint32_t
 }
 
 TEST(num_to_string, decimal_signed) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<10>(0), "0");
-    EXPECT_EQ(num_to_string<10>(-123), "-123");
-    EXPECT_EQ(num_to_string<10>(2147483647), "2147483647"); // max int32_t
-    EXPECT_EQ(num_to_string<10>(-2147483647), "-2147483647");
+    using T = int;
+    EXPECT_EQ(ml::num_to_string<10>(T{0}), "0");
+    EXPECT_EQ(ml::num_to_string<10>(T{-123}), "-123");
+    EXPECT_EQ(ml::num_to_string<10>(T{2147483647}), "2147483647"); // max int32_t
+    EXPECT_EQ(ml::num_to_string<10>(T{-2147483647}), "-2147483647");
 }
 
 TEST(num_to_string, hex_unsigned) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<16>(0u), "0");
-    EXPECT_EQ(num_to_string<16>(10u), "A");
-    EXPECT_EQ(num_to_string<16>(255u), "FF");
-    EXPECT_EQ(num_to_string<16>(4095u), "FFF");
+    using T = unsigned int;
+    EXPECT_EQ(ml::num_to_string<16>(T{0}), "0");
+    EXPECT_EQ(ml::num_to_string<16>(T{10}), "A");
+    EXPECT_EQ(ml::num_to_string<16>(T{255}), "FF");
+    EXPECT_EQ(ml::num_to_string<16>(T{4095}), "FFF");
 }
 
 TEST(num_to_string, hex_signed) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<16>(-10), "-A");
-    EXPECT_EQ(num_to_string<16>(-255), "-FF");
-    EXPECT_EQ(num_to_string<16>(-4095), "-FFF");
+    using T = int;
+    EXPECT_EQ(ml::num_to_string<16>(T{-10}), "-A");
+    EXPECT_EQ(ml::num_to_string<16>(T{-255}), "-FF");
+    EXPECT_EQ(ml::num_to_string<16>(T{-4095}), "-FFF");
 }
 
 TEST(num_to_string, base36_unsigned) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<36>(0u), "0");
-    EXPECT_EQ(num_to_string<36>(35u), "Z");
-    EXPECT_EQ(num_to_string<36>(36u), "10");
-    EXPECT_EQ(num_to_string<36>(71u), "1Z");
-    EXPECT_EQ(num_to_string<36>(1295u), "ZZ");
+    using T = unsigned int;
+    EXPECT_EQ(ml::num_to_string<36>(T{0}), "0");
+    EXPECT_EQ(ml::num_to_string<36>(T{35}), "Z");
+    EXPECT_EQ(ml::num_to_string<36>(T{36}), "10");
+    EXPECT_EQ(ml::num_to_string<36>(T{71}), "1Z");
+    EXPECT_EQ(ml::num_to_string<36>(T{1295}), "ZZ");
 }
 
 TEST(num_to_string, base36_signed) {
-    using ml::num_to_string;
-    EXPECT_EQ(num_to_string<36>(-35), "-Z");
-    EXPECT_EQ(num_to_string<36>(-36), "-10");
-    EXPECT_EQ(num_to_string<36>(-71), "-1Z");
-    EXPECT_EQ(num_to_string<36>(-1295), "-ZZ");
+    using T = int;
+    EXPECT_EQ(ml::num_to_string<36>(T{-35}), "-Z");
+    EXPECT_EQ(ml::num_to_string<36>(T{-36}), "-10");
+    EXPECT_EQ(ml::num_to_string<36>(T{-71}), "-1Z");
+    EXPECT_EQ(ml::num_to_string<36>(T{-1295}), "-ZZ");
 }
