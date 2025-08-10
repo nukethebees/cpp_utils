@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Include sub-projects.
 add_subdirectory ("ml_cpp_utils")
 add_subdirectory ("tests")
+add_subdirectory ("benchmarks")
 
 # Packaging
 ##############################################
