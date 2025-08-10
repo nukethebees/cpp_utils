@@ -4,7 +4,7 @@
 
 #include "ml_cpp_utils/text.hpp"
 
-static void BM_num_to_string(benchmark::State& state) {
+static void BM_num_to_string__base2_size_t(benchmark::State& state) {
     static constexpr std::size_t n{1000};
 
     for (auto _ : state) {
@@ -15,4 +15,4 @@ static void BM_num_to_string(benchmark::State& state) {
     state.SetItemsProcessed(state.iterations() * n);
 }
 
-BENCHMARK(BM_num_to_string);
+BENCHMARK(BM_num_to_string__base2_size_t);

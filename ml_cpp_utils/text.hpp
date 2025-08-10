@@ -54,6 +54,15 @@ inline auto is_inner_identifier_char(char c) noexcept -> bool {
 }
 
 template <std::size_t base, typename T>
+inline auto count_digits(T value) -> std::size_t {
+    if (value == 0) {
+        return 1;
+    } else {
+        return static_cast<size_t>(std::floor(std::log(value) / std::log(base))) + 1;
+    }
+}
+
+template <std::size_t base, typename T>
     requires (std::is_integral_v<T> && (base >= 2))
 auto num_to_string(T num) -> std::string {
     std::string out;
@@ -62,14 +71,10 @@ auto num_to_string(T num) -> std::string {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
         'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
-    bool is_negative{false};
     if constexpr (std::is_signed_v<T>) {
-        auto unum{static_cast<std::uint64_t>(num)};
-
-        if (num < 0) {
-            is_negative = true;
-            unum = static_cast<std::uint64_t>(-static_cast<std::int64_t>(num));
-        }
+        auto const is_negative{num < 0};
+        auto unum{is_negative ? static_cast<std::uint64_t>(-static_cast<std::int64_t>(num))
+                              : static_cast<std::uint64_t>(num)};
 
         while (unum) {
             out += digits[unum % base];
@@ -84,6 +89,8 @@ auto num_to_string(T num) -> std::string {
             out += '-';
         }
     } else {
+        out.reserve(count_digits<base>(num));
+
         while (num) {
             out += digits[num % base];
             num /= base;

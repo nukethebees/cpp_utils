@@ -236,3 +236,38 @@ TEST(num_to_string, base36_signed) {
     EXPECT_EQ(ml::num_to_string<36>(max), "ZIK0ZJ");
     EXPECT_EQ(ml::num_to_string<36>(min), "-ZIK0ZK");
 }
+
+// count_digits tests
+TEST(count_digits, base2) {
+    EXPECT_EQ(ml::count_digits<2>(0), 1u);
+    EXPECT_EQ(ml::count_digits<2>(1), 1u);
+    EXPECT_EQ(ml::count_digits<2>(2), 2u);
+    EXPECT_EQ(ml::count_digits<2>(3), 2u);
+    EXPECT_EQ(ml::count_digits<2>(4), 3u);
+    EXPECT_EQ(ml::count_digits<2>(7), 3u);
+    EXPECT_EQ(ml::count_digits<2>(8), 4u);
+}
+
+TEST(count_digits, base8) {
+    EXPECT_EQ(ml::count_digits<8>(0), 1u);
+    EXPECT_EQ(ml::count_digits<8>(7), 1u);
+    EXPECT_EQ(ml::count_digits<8>(8), 2u);
+    EXPECT_EQ(ml::count_digits<8>(63), 2u);
+    EXPECT_EQ(ml::count_digits<8>(64), 3u);
+}
+
+TEST(count_digits, base10) {
+    EXPECT_EQ(ml::count_digits<10>(0), 1u);
+    EXPECT_EQ(ml::count_digits<10>(9), 1u);
+    EXPECT_EQ(ml::count_digits<10>(10), 2u);
+    EXPECT_EQ(ml::count_digits<10>(99), 2u);
+    EXPECT_EQ(ml::count_digits<10>(100), 3u);
+}
+
+TEST(count_digits, base16) {
+    EXPECT_EQ(ml::count_digits<16>(0), 1u);
+    EXPECT_EQ(ml::count_digits<16>(15), 1u);
+    EXPECT_EQ(ml::count_digits<16>(16), 2u);
+    EXPECT_EQ(ml::count_digits<16>(255), 2u);
+    EXPECT_EQ(ml::count_digits<16>(256), 3u);
+}
