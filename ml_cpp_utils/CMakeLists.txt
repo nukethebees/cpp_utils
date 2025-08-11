@@ -13,5 +13,6 @@ target_sources(ml_cpp_utils
             "split_span.hpp"
             "string_hasher.hpp"
             "text.hpp"
+            "bitwise.hpp"
 )
 

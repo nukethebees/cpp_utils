@@ -6,6 +6,7 @@ add_executable(tests
     "test_split_span.cpp" 
     "test_string_hasher.cpp" 
     "test_text.cpp"
+    "test_bitwise.cpp"
 )
 target_link_libraries(tests PRIVATE 
     GTest::gtest_main 
